@@ -8,14 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Estado {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@OneToMany(mappedBy = "estados")
+	@ManyToMany(mappedBy = "estados")
 	private List<Estado> nome = new ArrayList<>();
 	@ManyToMany
 	private String regiao;
