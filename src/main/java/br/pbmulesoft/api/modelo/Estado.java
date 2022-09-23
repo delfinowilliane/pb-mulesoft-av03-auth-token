@@ -1,28 +1,33 @@
 package br.pbmulesoft.api.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
 public class Estado {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToMany(mappedBy = "estados")
-	private List<Estado> nome = new ArrayList<>();
-	@ManyToMany
+//	@ManyToMany(mappedBy = "estados")
+	private String nome;
+//	@ManyToMany
 	private String regiao;
 	private Integer populacao;
 	private String capital;
 	private Integer area;
 	
-	
+	public Estado(String nome, String regiao, int populacao, String capital, int area) {
+		this.nome = nome;
+		this.regiao = regiao;
+		this.populacao = populacao;
+		this.capital = capital;
+		this.area = area;
+		
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -52,6 +57,14 @@ public class Estado {
 	}
 	public void setArea(Integer area) {
 		this.area = area;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
 }
