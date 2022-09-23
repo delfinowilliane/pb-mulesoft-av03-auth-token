@@ -20,10 +20,9 @@ public class EstadosController {
 	@RequestMapping("/api/v1/estados")
 	@ResponseBody
 	public List<EstadoDto> lista(String regiao) {
-		System.out.println(regiao);
-		List<Estado> estados = estadoRepository.findAll(); //carregar todos os registros do banco de dados
-		
-		return EstadoDto.converter(estados);
-	}
+					
+			List<Estado> estados = estadoRepository.findAll(); //carregar todos os registros do banco de dados			
+			return EstadoDto.converter(estados);
+		}
 
-}
+	}

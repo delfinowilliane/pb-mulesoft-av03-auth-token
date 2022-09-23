@@ -17,6 +17,7 @@ public class EstadoDto {
 	public EstadoDto(Estado estado) {
 		this.id = estado.getId();
 		this.nome = estado.getNome();
+		this.regiao = estado.getRegiao();
 		this.populacao = estado.getPopulacao();
 		this.capital = estado.getCapital();
 		this.area = estado.getArea();
