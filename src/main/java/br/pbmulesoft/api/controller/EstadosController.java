@@ -2,6 +2,7 @@ package br.pbmulesoft.api.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -27,54 +28,74 @@ import br.pbmulesoft.api.repository.EstadoRepository;
 @RestController
 @RequestMapping("/api/v1/estados")
 public class EstadosController {
-	
+
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
+
 	@GetMapping
 	@ResponseBody
 	public List<EstadoDto> lista(String regiao) {
-		
-		if(regiao == null) {
-			
-			List<Estado> estados = estadoRepository.findAll(); //carregar todos os registros do banco de dados			
+
+		if (regiao == null) {
+
+			List<Estado> estados = estadoRepository.findAll(); // carregar todos os registros do banco de dados
 			return EstadoDto.converter(estados);
-			
-		} else  {
+
+		} else {
 			List<Estado> estados = estadoRepository.findByRegiao(regiao);
-	        return EstadoDto.converter(estados);
+			return EstadoDto.converter(estados);
 
 		}
-		
+
 	}
-	
+
 	@PostMapping
 	@Transactional
 	public ResponseEntity<EstadoDto> cadastrar(@RequestBody EstadoForm form, UriComponentsBuilder uriBuilder) {
 		Estado estado = form.converter();
 		estadoRepository.save(estado);
-		
+
 		URI uri = uriBuilder.path("/api/v1/estados/{id}").buildAndExpand(estado.getId()).toUri();
 		return ResponseEntity.created(uri).body(new EstadoDto(estado));
 	}
-	
+
 	@GetMapping("{id}")
-	public EstadoDto detalhar(@PathVariable Long id) {
-		Estado estado = estadoRepository.getById(id);
-		return new EstadoDto (estado);
+	public ResponseEntity<EstadoDto> detalhar(@PathVariable Long id) {
+		Optional<Estado> estado = estadoRepository.findById(id); //Tratamento do erro 404
+
+		if (estado.isPresent()) {
+			return ResponseEntity.ok(new EstadoDto(estado.get()));
+		}
+
+		return ResponseEntity.notFound().build();
+
 	}
-	
+
 	@PutMapping("{id}")
 	@Transactional
-	public ResponseEntity<EstadoDto> atualizar(@PathVariable Long id, @RequestBody AtualizarEstadoForm form){
-		Estado estado = form.atualizar(id, estadoRepository);
-		return ResponseEntity.ok(new EstadoDto(estado));
+	public ResponseEntity<EstadoDto> atualizar(@PathVariable Long id, @RequestBody AtualizarEstadoForm form) {
+
+		Optional<Estado> optional = estadoRepository.findById(id); //Tratamento do erro 404
+
+		if (optional.isPresent()) {
+			Estado estado = form.atualizar(id, estadoRepository);
+			return ResponseEntity.ok(new EstadoDto(estado));
+		}
+
+		return ResponseEntity.notFound().build();
+
 	}
-	
+
 	@DeleteMapping("{id}")
 	@Transactional
-	public ResponseEntity<?> deletar(@PathVariable Long id){
-		estadoRepository.deleteById(id);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<?> deletar(@PathVariable Long id) {
+		Optional<Estado> optional = estadoRepository.findById(id); //Tratamento do erro 404		
+		if (optional.isPresent()) {
+			estadoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		
+		return ResponseEntity.notFound().build();
+
 	}
 }
