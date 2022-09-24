@@ -7,8 +7,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +38,9 @@ public class EstadosController {
 
 	@GetMapping
 	@ResponseBody
-	public Page<EstadoDto> lista(@RequestParam (required = false) String regiao, @RequestParam int page, @RequestParam int qtd) {
+	public Page<EstadoDto> lista(@RequestParam(required = false) String regiao, 
+			@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 
-		Pageable paginacao = PageRequest.of(page, qtd);
-				
 		if (regiao == null) {
 
 			Page<Estado> estados = estadoRepository.findAll(paginacao); // carregar todos os registros do banco de dados
@@ -66,7 +66,7 @@ public class EstadosController {
 
 	@GetMapping("{id}")
 	public ResponseEntity<EstadoDto> detalhar(@PathVariable Long id) {
-		Optional<Estado> estado = estadoRepository.findById(id); //Tratamento do erro 404
+		Optional<Estado> estado = estadoRepository.findById(id); // Tratamento do erro 404
 
 		if (estado.isPresent()) {
 			return ResponseEntity.ok(new EstadoDto(estado.get()));
@@ -80,7 +80,7 @@ public class EstadosController {
 	@Transactional
 	public ResponseEntity<EstadoDto> atualizar(@PathVariable Long id, @RequestBody AtualizarEstadoForm form) {
 
-		Optional<Estado> optional = estadoRepository.findById(id); //Tratamento do erro 404
+		Optional<Estado> optional = estadoRepository.findById(id); // Tratamento do erro 404
 
 		if (optional.isPresent()) {
 			Estado estado = form.atualizar(id, estadoRepository);
@@ -94,12 +94,12 @@ public class EstadosController {
 	@DeleteMapping("{id}")
 	@Transactional
 	public ResponseEntity<?> deletar(@PathVariable Long id) {
-		Optional<Estado> optional = estadoRepository.findById(id); //Tratamento do erro 404		
+		Optional<Estado> optional = estadoRepository.findById(id); // Tratamento do erro 404
 		if (optional.isPresent()) {
 			estadoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
-		
+
 		return ResponseEntity.notFound().build();
 
 	}
