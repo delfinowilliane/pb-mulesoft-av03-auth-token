@@ -1,12 +1,14 @@
 package br.pbmulesoft.api.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,15 +37,17 @@ public class EstadosController {
 
 	@GetMapping
 	@ResponseBody
-	public List<EstadoDto> lista(String regiao) {
+	public Page<EstadoDto> lista(@RequestParam (required = false) String regiao, @RequestParam int page, @RequestParam int qtd) {
 
+		Pageable paginacao = PageRequest.of(page, qtd);
+				
 		if (regiao == null) {
 
-			List<Estado> estados = estadoRepository.findAll(); // carregar todos os registros do banco de dados
+			Page<Estado> estados = estadoRepository.findAll(paginacao); // carregar todos os registros do banco de dados
 			return EstadoDto.converter(estados);
 
 		} else {
-			List<Estado> estados = estadoRepository.findByRegiao(regiao);
+			Page<Estado> estados = estadoRepository.findByRegiao(regiao, paginacao);
 			return EstadoDto.converter(estados);
 
 		}

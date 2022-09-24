@@ -1,7 +1,6 @@
 package br.pbmulesoft.api.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 import br.pbmulesoft.api.modelo.Estado;
 
@@ -42,8 +41,8 @@ public class EstadoDto {
 		return area;
 	}
 
-	public static List<EstadoDto> converter(List<Estado> estados) {
-		return estados.stream().map(EstadoDto::new).collect(Collectors.toList());
+	public static Page<EstadoDto> converter(Page<Estado> estados) {
+		return estados.map(EstadoDto::new);
 	}
 
 	
