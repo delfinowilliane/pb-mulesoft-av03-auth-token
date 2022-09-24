@@ -3,7 +3,7 @@ package br.pbmulesoft.api.controller.form;
 import br.pbmulesoft.api.modelo.Estado;
 
 public class EstadoForm {
-
+	
 	private String nome; //estado
 	private String regiao;
 	private Integer populacao;
@@ -16,7 +16,7 @@ public class EstadoForm {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getRegiao() {
+	public String getRegiao() {		
 		return regiao;
 	}
 	public void setRegiao(String regiao) {
