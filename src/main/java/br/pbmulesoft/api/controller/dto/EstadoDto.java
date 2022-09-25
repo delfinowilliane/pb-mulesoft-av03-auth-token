@@ -3,12 +3,13 @@ package br.pbmulesoft.api.controller.dto;
 import org.springframework.data.domain.Page;
 
 import br.pbmulesoft.api.modelo.Estado;
+import br.pbmulesoft.api.modelo.Regiao;
 
 public class EstadoDto {
 
 	private Long id;
 	private String nome;
-	private String regiao;
+	private Regiao regiao;
 	private Integer populacao;
 	private String capital;
 	private Integer area;
@@ -28,7 +29,7 @@ public class EstadoDto {
 	public String getNome() {
 		return nome;
 	}
-	public String getRegiao() {
+	public Regiao getRegiao() {
 		return regiao;
 	}
 	public Integer getPopulacao() {

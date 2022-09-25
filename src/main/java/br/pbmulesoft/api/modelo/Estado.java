@@ -2,6 +2,8 @@ package br.pbmulesoft.api.modelo;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +14,8 @@ public class Estado {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome; //estado
-	private String regiao;
+	@Enumerated(EnumType.STRING)
+	private Regiao regiao;
 	private Integer populacao;
 	private String capital;
 	private Integer area;
@@ -21,7 +24,7 @@ public class Estado {
 	public Estado() {
 	}
 
-	public Estado(String nome, String regiao, Integer populacao, String capital, Integer area) {
+	public Estado(String nome, Regiao regiao, Integer populacao, String capital, Integer area) {
 		this.nome = nome;
 		this.regiao = regiao;
 		this.populacao = populacao;
@@ -87,11 +90,11 @@ public class Estado {
 		this.nome = nome;
 	}
 
-	public String getRegiao() {
+	public Regiao getRegiao() {
 		return regiao;
 	}
 
-	public void setRegiao(String regiao) {
+	public void setRegiao(Regiao regiao) {
 		this.regiao = regiao;
 	}
 	
