@@ -1,4 +1,4 @@
-INSERT INTO USUARIO(nome, email, senha) VALUES('Fulano de Tal', 'fulano@gmail.com', '$2a$10$wqxp3k7oxBkmWOyZ4J7LsecKNQ0LjYwbXDpAyyUoKuv.pFhBGGZhS');
+INSERT INTO USUARIO(nome, email, senha) VALUES('Fulano de Tal', 'fulano@gmail.com', '$2a$10$UdZ7EHfV4TnJk9fsqCZqeetSWTEMqkZsaBsg./JPUPC45dfrM3NBy');
 
 INSERT INTO ESTADO (nome, populacao, capital, area, regiao) VALUES ('Rio Grande do Norte', 3409000, 'Natal', 52797, 'NORDESTE');
 INSERT INTO ESTADO (nome, populacao, capital, area, regiao) VALUES ('Paraná', 1815681, 'Curitiba', 199315, 'SUL');

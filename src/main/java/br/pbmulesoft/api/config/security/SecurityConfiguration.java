@@ -28,14 +28,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/estados").permitAll()
 		.antMatchers(HttpMethod.GET, "/estados/*").permitAll()
 		.anyRequest().authenticated()
-		.and().formLogin();	
+		.and().formLogin();
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(new BCryptPasswordEncoder().encode("1234fdsert"));
-	}
 }
