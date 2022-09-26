@@ -5,9 +5,15 @@ import java.net.URI;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,36 +35,24 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-//	@GetMapping
-//	@ResponseBody
-//	public Page<UsuarioDto> lista(@RequestParam(required = false) String email) {
-//
-//		
-//		if (email == null) {
-//
-//			Page<Usuario> usuarios = usuarioRepository.findAll(email); // carregar todos os registros do banco de
-//																			// dados
-//			return UsuarioDto.converter(usuarios);
-//
-//		} else {
-//			Page<Usuario> usuarios = usuarioRepository.findByEmail(email);
-//			return UsuarioDto.converter(usuarios);
-//
-//		}
-//
-//	}
+	@GetMapping
+	public Page<UsuarioDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
+		
+		Page<Usuario> usuario = usuarioRepository.findAll(paginacao);
+		return UsuarioDto.converter(usuario);
+	}
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody UsuarioForm form, UriComponentsBuilder uriBuilder) {
-		Usuario usuarios = form.converter();
-		usuarioRepository.save(usuarios);
+	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm form, UriComponentsBuilder uriBuilder) {
+		Usuario usuario = form.converter();
+		usuarioRepository.save(usuario);
 
-		URI uri = uriBuilder.path("/api/v1/usuarios").buildAndExpand(usuarios.getId()).toUri();
-		return ResponseEntity.created(uri).body(new UsuarioDto(usuarios));
+		URI uri = uriBuilder.path("/api/v1/usuarios").buildAndExpand(usuario.getId()).toUri();
+		return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
 	}
 	
-	@PutMapping("{id}")
+	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<UsuarioDto> atualizar(@PathVariable Long id, @RequestBody AtualizarUsuarioForm form) {
 

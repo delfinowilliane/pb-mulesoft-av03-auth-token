@@ -12,9 +12,10 @@ public class UsuarioDto {
     private String senha;
 	
     public UsuarioDto(Usuario usuarios) {
-		this.id = usuarios.getId();
+    	this.id = usuarios.getId();
 		this.nome = usuarios.getNome();
 		this.email = usuarios.getEmail();
+		this.senha = usuarios.getSenha();
 	}
 
 	public Long getId() {

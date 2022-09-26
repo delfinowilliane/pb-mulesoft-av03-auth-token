@@ -1,6 +1,7 @@
 package br.pbmulesoft.api.controller.form;
 
 import br.pbmulesoft.api.modelo.Usuario;
+import br.pbmulesoft.api.repository.UsuarioRepository;
 
 public class UsuarioForm {
 
@@ -8,7 +9,8 @@ public class UsuarioForm {
     private String nome;
     private String email;
     private String senha;
-	public Long getId() {
+	
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
@@ -34,6 +36,15 @@ public class UsuarioForm {
 	}
     
 	public Usuario converter() {
-		return new Usuario(nome, email);
+		return new Usuario(nome, email, senha);
+	}
+	
+	public Usuario atualizar(Long id, UsuarioRepository usuarioRepository) {
+		Usuario usuario = usuarioRepository.getById(id);
+		usuario.setNome(this.nome);
+		usuario.setEmail(this.email);
+		usuario.setSenha(this.senha);
+		
+		return usuario;
 	}
 }

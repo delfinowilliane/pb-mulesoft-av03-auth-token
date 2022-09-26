@@ -29,9 +29,10 @@ public class Usuario implements UserDetails {
 	private List<Perfil> perfis = new ArrayList<>();
  
 	
-    public Usuario(String nome, String email) {
+    public Usuario(String nome, String email, String senha) {
     	this.nome = nome;
     	this.email = email;
+    	this.senha = senha;
     }
 
 	@Override
@@ -84,6 +85,7 @@ public class Usuario implements UserDetails {
 		this.senha = senha;
 	}
 
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.perfis;

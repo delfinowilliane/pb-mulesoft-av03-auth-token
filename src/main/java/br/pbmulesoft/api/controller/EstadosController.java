@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class EstadosController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<EstadoDto> cadastrar(@RequestBody EstadoForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<EstadoDto> cadastrar(@RequestBody @Valid EstadoForm form, UriComponentsBuilder uriBuilder) {
 		Estado estado = form.converter();
 		estadoRepository.save(estado);
 
@@ -64,7 +65,7 @@ public class EstadosController {
 		return ResponseEntity.created(uri).body(new EstadoDto(estado));
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<EstadoDto> detalhar(@PathVariable Long id) {
 		Optional<Estado> estado = estadoRepository.findById(id); // Tratamento do erro 404
 
@@ -76,7 +77,7 @@ public class EstadosController {
 
 	}
 
-	@PutMapping("{id}")
+	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<EstadoDto> atualizar(@PathVariable Long id, @RequestBody AtualizarEstadoForm form) {
 
@@ -91,7 +92,7 @@ public class EstadosController {
 
 	}
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> deletar(@PathVariable Long id) {
 		Optional<Estado> optional = estadoRepository.findById(id); // Tratamento do erro 404
