@@ -1,0 +1,228 @@
+openapi: 3.0.1
+info:
+  title: API estados brasileiros
+  description: API para cadastro de estados brasileiros
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+  description: API de Teste
+paths:
+  /api/v1/estados:
+    get:
+      summary: Recupera a lista de estados
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/estados"
+    post:
+      summary: Cadastrar novo estado
+      description: "Cadastrar novo estado"
+      requestBody:
+        description: "Crie um novo estado em uma das cinco regiões"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cadastrar_estado"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/estado"
+      security:
+        - autenticacao: []
+  /api/v1/estados/{id}:  
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+      required: true
+    get:
+      summary: Recuperar um estado cadastrado pelo ID
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/estado"
+        404:
+          description: "Estado não encontrado"
+          content:
+            application/json:
+              example: "Not Found"
+              schema:
+                $ref: "#/components/schemas/estado"
+    put: 
+      summary: Atualizar informações do estado pelo ID
+      description: "Atualizar informações do estado pelo ID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cadastrar_estado"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cadastrar_estado"
+      security:
+        - autenticacao: []
+    delete:
+      summary: Apagar estado da lista de cadastro
+      description: "Apagar estado da lista de cadastro"
+      responses:
+        200:
+          description: "Estado deletado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/estado"
+        404:
+          description: "Estado não encontrado"
+          content:
+            application/json:
+              example: "Not Found"
+              schema:
+                $ref: "#/components/schemas/estado"
+      security:
+        - autenticacao: []
+  /api/v1/usuarios:
+    get:
+      summary: Recuperar a lista de usuarios cadastrados
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/usuario"
+    post:
+      summary: Cadastrar novo usuario
+      description: "Cadastrar novo usuario"
+      requestBody:
+        description: "Crie um novo usuario"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cadastrar_usuario"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cadastrar_usuario"
+  /api/v1/usuarios/{id}:  
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+      required: true
+    put: 
+      summary: Atualizar informações do usuario pelo ID
+      description: "Atualizar informações do usuario pelo ID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cadastrar_usuario"
+      responses:
+        201:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cadastrar_usuario"
+  /api/av1/autenticacao:
+    post:
+      summary: Autenticar um usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/autenticar_usuario"
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/autenticar_usuario"     
+components:
+    schemas:
+      estado:
+        type: object
+        properties:
+          id:
+            type: integer
+          nome:
+            type: string
+          populacao:
+            type: integer
+          capital:
+            type: string
+          area:
+            type: integer
+          regiao:
+            type: string
+      estados:
+        type: array
+        items:
+          $ref: "#/components/schemas/estados"
+      cadastrar_estado:
+        type: object
+        properties:
+          id:
+            type: integer
+          nome:
+            type: string
+          populacao:
+            type: integer
+          capital:
+            type: string
+          area:
+            type: integer
+          regiao:
+            type: string
+      usuario:
+        type: object
+        properties:
+          id:
+            type: integer
+          nome: 
+            type: string
+          email:
+            type: string
+          senha: 
+            type: string
+      cadastrar_usuario:
+        type: object
+        properties:
+          nome: 
+            type: string
+          email:
+            type: string
+          senha: 
+            type: string
+      autenticar_usuario:
+        type: object
+        properties:
+          email:
+            type: string
+          senha: 
+            type: string
+    securitySchemes:
+      autenticacao:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+    
